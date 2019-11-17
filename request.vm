@@ -1,0 +1,7 @@
+#set($integer = $input.params('integer'))
+
+{
+    #if($integer != "")
+        "integer": "$integer"
+    #end
+}
