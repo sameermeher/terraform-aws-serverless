@@ -1,7 +1,7 @@
 # A data source containing the lambda function
 data "archive_file" "lambda" {
   source_file = "toRomanNumeral.js"
-  type = "zip"
+  type        = "zip"
   output_path = "toRomanNumeral.zip"
 }
 
@@ -48,15 +48,15 @@ resource "aws_lambda_permission" "allow_api_gateway" {
 
 # Create an IAM role for the lambda function
 resource "aws_iam_role" "lambda-role" {
-  name = "iam-lambda-role"
+  name               = "iam-lambda-role"
   assume_role_policy = "${file("lambdaRole.json")}"
 }
 
 # Create an IAM policy for a role
 # This isnt necessary for the current configuration, although it is good to see how a policy can be attached
 resource "aws_iam_role_policy" "lambda-policy" {
-  name = "iam-lambda-policy"
-  role = "${aws_iam_role.lambda-role.id}"
+  name   = "iam-lambda-policy"
+  role   = "${aws_iam_role.lambda-role.id}"
   policy = "${file("lambdaPolicy.json")}"
 }
 
@@ -76,7 +76,7 @@ resource "aws_api_gateway_rest_api" "roman-numeral-api" {
 resource "aws_api_gateway_resource" "roman-numeral-api-resource" {
   # The id of the associated REST API and parent API resource are required
   rest_api_id = "${aws_api_gateway_rest_api.roman-numeral-api.id}"
-  parent_id = "${aws_api_gateway_rest_api.roman-numeral-api.root_resource_id}"
+  parent_id   = "${aws_api_gateway_rest_api.roman-numeral-api.root_resource_id}"
 
   # The last segment of the URL path for this API resource
   path_part = "roman-numeral"
@@ -84,7 +84,7 @@ resource "aws_api_gateway_resource" "roman-numeral-api-resource" {
 
 resource "aws_api_gateway_resource" "integer-api-resource" {
   rest_api_id = "${aws_api_gateway_rest_api.roman-numeral-api.id}"
-  parent_id = "${aws_api_gateway_resource.roman-numeral-api-resource.id}"
+  parent_id   = "${aws_api_gateway_resource.roman-numeral-api-resource.id}"
 
   path_part = "{integer}"
 }
@@ -122,7 +122,7 @@ resource "aws_api_gateway_integration" "lambda-api-integration" {
 
   # Configure the Velocity request template for the application/json MIME type
   request_templates = {
-    "application/json" = file("request.vm")#"${file("request.vm")}"
+    "application/json" = file("request.vm") #"${file("request.vm")}"
   }
 }
 
@@ -144,7 +144,7 @@ resource "aws_api_gateway_integration_response" "lambda-api-integration-response
 
   # Configure the Velocity response template for the application/json MIME type
   response_templates = {
-    "application/json" = file("response.vm")#"${file("response.vm")}"
+    "application/json" = file("response.vm") #"${file("response.vm")}"
   }
 
   # Remove race condition where the integration response is built before the lambda integration
