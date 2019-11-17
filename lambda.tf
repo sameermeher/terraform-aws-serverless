@@ -24,7 +24,7 @@ resource "aws_lambda_function" "to-roman-numberal-js" {
 
   # The source code hash is used by Terraform to detect whether the source code of the lambda function
   # has changed.  If it changed, Terraform will re-upload the lambda function.
-  source_code_hash = "${filebase64sha256("toRomanNumeral.zip")}"
+  #source_code_hash = "${filebase64sha256("toRomanNumeral.zip")}"
 }
 
 # Set permissions on the lambda function, allowing API Gateway to invoke the function
