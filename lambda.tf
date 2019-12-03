@@ -166,17 +166,3 @@ resource "aws_api_gateway_deployment" "roman-numeral-api-dev-deployment" {
     "aws_api_gateway_integration_response.lambda-api-integration-response"
   ]
 }
-
-# Create a new API Gateway deployment (QA)
-resource "aws_api_gateway_deployment" "roman-numeral-api-qa-deployment" {
-  rest_api_id = "${aws_api_gateway_rest_api.roman-numeral-api.id}"
-
-  # development stage
-  stage_name = "qa"
-
-  # Remove race conditions - deployment should always occur after lambda integration
-  depends_on = [
-    "aws_api_gateway_integration.lambda-api-integration",
-    "aws_api_gateway_integration_response.lambda-api-integration-response"
-  ]
-}
